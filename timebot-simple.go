@@ -64,7 +64,7 @@ func handler_time(w http.ResponseWriter, r *http.Request) {
 	case "jpn":
 		fmt.Fprintf(w, mytimes.jpn.Format(shortformat)+" in Japan ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	case "utc":
-		fmt.Fprintf(w, mytimes.utc.Format(shortformat)+" in London/UTC. that's "+mytimes.lax.Format(shortformat)+" in Los Angeles, and "+mytimes.jpn.Format(shortformat)+" in Japan. thanks for asking, %s\n", user)
+		fmt.Fprintf(w, mytimes.utc.Format(shortformat)+" in London/UTC. that's "+mytimes.lax.Format(shortformat)+" in Los Angeles, and "+mytimes.jpn.Format(shortformat)+" in Japan. thanks for asking, @%s\n", user)
 	default:
 		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	}
