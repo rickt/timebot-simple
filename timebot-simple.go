@@ -16,9 +16,9 @@ const (
 
 // types
 type times struct {
-	jpn       time.Time
-	lax       time.Time
-	utc       time.Time
+	jpn time.Time
+	lax time.Time
+	utc time.Time
 }
 
 func init() {
@@ -51,11 +51,14 @@ func handler_redirect(w http.ResponseWriter, r *http.Request) {
 func handler_time(w http.ResponseWriter, r *http.Request) {
 	var mytimes times
 	mytimes = getTime()
+
+	// example call from slack
+	// /time?place=jpn&token=REDACTED&team_id=REDACTED&team_domain=REDACTED&channel_id=REDACTED&channel_name=directmessage&user_id=REDACTED&user_name=REDACTED&command=%2Fjapantime&text=&response_url=REDACTED
 	place := r.URL.Query().Get("place")
 	// user := r.URL.Query().Get("user_name")
 	switch place {
 	case "lax":
-		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan,  "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
+		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	case "jpn":
 		fmt.Fprintf(w, mytimes.jpn.Format(shortformat)+" in Japan ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	case "utc":
