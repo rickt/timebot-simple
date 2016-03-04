@@ -16,9 +16,9 @@ const (
 
 // types
 type times struct {
-	jpn time.Time
-	lax time.Time
-	utc time.Time
+	jpn       time.Time
+	lax       time.Time
+	utc       time.Time
 }
 
 func init() {
@@ -52,14 +52,19 @@ func handler_time(w http.ResponseWriter, r *http.Request) {
 	var mytimes times
 	mytimes = getTime()
 	// was there a parameter?
+
+	// example slack request uri
+	// time?place=lax&token=sDwv7mlxpr6MjwotC99nkfmn&team_id=T0E5Y4S9F&team_domain=39hms&channel_id=C0E5Z2GET&channel_name=alerts-nutanix&user_id=U0E5ZBQSC&user_name=rickt&command=%2Ftime&text=&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT0E5Y4S9F%2F24318942996%2FE7P592ByxSv7Aj2zxveUuXWJ
+
 	place := r.URL.Query().Get("place")
+	user := r.URL.Query().Get("user_name")
 	switch place {
 	case "lax":
 		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan,  "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	case "jpn":
 		fmt.Fprintf(w, mytimes.jpn.Format(shortformat)+" in Japan ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	case "utc":
-		fmt.Fprintf(w, mytimes.utc.Format(shortformat)+" in London/UTC ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.jpn.Format(shortformat)+" in Japan)\n")
+		fmt.Fprintf(w, mytimes.utc.Format(shortformat)+" in London/UTC. that's "+mytimes.lax.Format(shortformat)+" in Los Angeles, and "+mytimes.jpn.Format(shortformat)+" in Japan. thanks for asking, %s\n", user)
 	default:
 		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
 	}
