@@ -44,7 +44,7 @@ func getTime() times {
 
 // redirect
 func handler_redirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "http://timebot-simple.appspot.com/time", 302)
+	http.Redirect(w, r, "/time", 302)
 }
 
 // print the current time in Japan, LA, London/UTC
