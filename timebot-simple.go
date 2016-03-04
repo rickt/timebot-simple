@@ -1,7 +1,7 @@
 // http://timebot-simple.appspot.com/time
 // http://timebot-simple.appspot.com/time?place=lax (etc)
 
-package timebot-simple
+package timebotsimple
 
 import (
 	"fmt"
