@@ -1,4 +1,5 @@
-simple go app that returns a nice string with the current time in Los Angeles, Japan & London/UTC.
+# timebot-simple
+####  a simple go app that returns a nice string with the current time in Los Angeles, Japan & London/UTC.
 
 if request = / redirect to /time
 
