@@ -4,7 +4,7 @@
 application: timebot-simple
 
 # version is mandatory
-version: 3-10
+version: 3-13
 
 # runtime is mandatory
 runtime: go

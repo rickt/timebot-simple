@@ -27,43 +27,23 @@ func init() {
 	http.HandleFunc("/time", handler_time)
 }
 
-// get the current time in JPN, LAX, UTC and return them in a struct of 3x t.Time
-func getTime() times {
-	var tzu times
-	t := time.Now()
-	// locations
-	loc_lax, _ := time.LoadLocation("America/Los_Angeles")
-	loc_jpn, _ := time.LoadLocation("Japan")
-	loc_utc, _ := time.LoadLocation("UTC")
-	// times
-	tzu.lax = t.In(loc_lax)
-	tzu.jpn = t.In(loc_jpn)
-	tzu.utc = t.In(loc_utc)
-	return tzu
-}
-
 // redirect
 func handler_redirect(w http.ResponseWriter, r *http.Request) {
+	// redirect / to /time
 	http.Redirect(w, r, "/time", 302)
 }
 
 // print the current time in Japan, LA, London/UTC
 func handler_time(w http.ResponseWriter, r *http.Request) {
-	var mytimes times
-	mytimes = getTime()
-
 	// example call from slack
 	// /time?place=jpn&token=REDACTED&team_id=REDACTED&team_domain=REDACTED&channel_id=REDACTED&channel_name=directmessage&user_id=REDACTED&user_name=REDACTED&command=%2Fjapantime&text=&response_url=REDACTED
 	place := r.URL.Query().Get("place")
 	// user := r.URL.Query().Get("user_name")
 	switch place {
-	case "lax":
-		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
-	case "jpn":
-		fmt.Fprintf(w, mytimes.jpn.Format(shortformat)+" in Japan ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
-	case "utc":
-		fmt.Fprintf(w, mytimes.utc.Format(shortformat)+" in London/UTC ("+mytimes.lax.Format(shortformat)+" in Los Angeles, "+mytimes.jpn.Format(shortformat)+" in Japan)\n")
+	case "healthcheck":
+		fmt.Fprintf(w, "ok\n")
 	default:
-		fmt.Fprintf(w, mytimes.lax.Format(shortformat)+" in Los Angeles ("+mytimes.jpn.Format(shortformat)+" in Japan, "+mytimes.utc.Format(shortformat)+" in London/UTC)\n")
+		loc, _ := time.LoadLocation(place)
+		fmt.Fprintf(w, time.Now().In(loc).Format(shortformat)+" in "+place+"\n")
 	}
 }
